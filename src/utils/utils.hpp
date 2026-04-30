@@ -1,5 +1,6 @@
 #pragma once
 #include <windows.h>
+#include <cstdint>
 
 namespace utils {
     DWORD GetPID(const char* name);
