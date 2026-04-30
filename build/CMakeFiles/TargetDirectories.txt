@@ -1,0 +1,3 @@
+C:/Users/bigne/Desktop/eni cs/build/CMakeFiles/ENICS2ESP.dir
+C:/Users/bigne/Desktop/eni cs/build/CMakeFiles/edit_cache.dir
+C:/Users/bigne/Desktop/eni cs/build/CMakeFiles/rebuild_cache.dir
