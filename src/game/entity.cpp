@@ -1,5 +1,6 @@
 #include "entity.hpp"
 #include <algorithm>
+#include <cstdio>
 
 bool EntityList::Initialize(Memory* mem, uintptr_t clientBase) {
     mem_ = mem;
@@ -34,6 +35,12 @@ void EntityList::Update() {
         PlayerInfo player{};
         if (!ReadPlayer(controller, pawn, player, false)) continue;
         player.distance = local_.pos.DistTo(player.pos);
+        std::printf("[ESP] Slot %u | Pawn 0x%llx | Health %d | Team %d | Pos %.1f %.1f %.1f\n",
+            i,
+            static_cast<unsigned long long>(pawn),
+            player.health,
+            player.team,
+            player.pos.x, player.pos.y, player.pos.z);
         players_.push_back(player);
     }
 

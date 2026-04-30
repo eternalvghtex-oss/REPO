@@ -2,7 +2,7 @@
 #include <cstdint>
 
 namespace offsets {
-    // Fresh cs2-dumper (2026-04-29)
+    // Source: a2x/cs2-dumper (user-provided snapshot date 2026-04-29)
     constexpr uintptr_t dwEntityList = 0x24CEC60;
     constexpr uintptr_t dwLocalPlayerController = 0x23084C0;
     constexpr uintptr_t dwLocalPlayerPawn = 0x20546A0;
@@ -17,7 +17,9 @@ namespace offsets {
     constexpr uintptr_t m_lifeState = 0x348;
     constexpr uintptr_t m_pGameSceneNode = 0x328;
     constexpr uintptr_t m_modelState = 0x170;
-    constexpr uintptr_t m_hPlayerPawn = 0x80C;
+    // Controller -> pawn handle (dwPlayerPawn / m_hPlayerPawn)
+    constexpr uintptr_t dwPlayerPawn = 0x7BC;
+    constexpr uintptr_t m_hPlayerPawn = dwPlayerPawn;
     constexpr uintptr_t m_iShotsFired = 0x22B0;
-    constexpr uintptr_t m_pBoneArray = 0x80;     // CModelState + m_pBoneArray
+    constexpr uintptr_t m_pBoneArray = 0x80;     // CModelState + m_boneMatrix
 }
