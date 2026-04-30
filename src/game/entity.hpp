@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <cstdint>
 #include "utils/vector.hpp"
 #include "memory/memory.hpp"
 #include "offsets.hpp"
@@ -34,8 +35,10 @@ private:
     uintptr_t clientBase_ = 0;
     std::vector<PlayerInfo> players_;
     PlayerInfo local_{};
-    
-    bool ReadPlayer(uintptr_t controller, PlayerInfo& out, bool isLocal);
+
+    uintptr_t ResolveEntityFromIndex(uint32_t index) const;
+    uintptr_t ResolvePawnFromHandle(uint32_t pawnHandle) const;
+    bool ReadPlayer(uintptr_t controller, uintptr_t pawn, PlayerInfo& out, bool isLocal);
     bool ReadBones(uintptr_t pawn, PlayerInfo& out);
     Vec3 GetBonePos(uintptr_t boneArray, int boneId);
 };
