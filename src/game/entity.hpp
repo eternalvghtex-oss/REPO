@@ -1,4 +1,5 @@
 #pragma once
+#include <vector>
 #include "utils/vector.hpp"
 #include "memory/memory.hpp"
 #include "offsets.hpp"

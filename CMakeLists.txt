@@ -23,6 +23,7 @@ set(IMGUI_SOURCES
     external/imgui/imgui_draw.cpp
     external/imgui/imgui_tables.cpp
     external/imgui/imgui_widgets.cpp
+    external/imgui/imgui_demo.cpp
     external/imgui/backends/imgui_impl_win32.cpp
     external/imgui/backends/imgui_impl_dx11.cpp
 )
@@ -44,5 +45,5 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 # Release оптимизации
 target_compile_options(${PROJECT_NAME} PRIVATE
-    $<$<CONFIG:Release>:/O2 /Ob2 /Oi /Ot /Oy /GL>
+    $<$<AND:$<CONFIG:Release>,$<CXX_COMPILER_ID:MSVC>>:/O2 /Ob2 /Oi /Ot /Oy /GL>
 )

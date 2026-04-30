@@ -27,10 +27,9 @@ void EntityList::Update() {
     local_.isAlive = local_.lifeState == 0 && local_.health > 0;
     
     if (localPawn) {
-        local_.pos = mem_->Read<Vec3>(localPawn + offsets::m_vOldOrigin);
         uintptr_t gameScene = mem_->Read<uintptr_t>(localPawn + offsets::m_pGameSceneNode);
         if (gameScene) {
-            local_.pos = mem_->Read<Vec3>(gameScene + offsets::m_vecAbsOrigin);
+            local_.pos = mem_->Read<Vec3>(gameScene + offsets::m_vecOrigin);
         }
     }
     
@@ -90,13 +89,10 @@ bool EntityList::ReadPlayer(uintptr_t controller, PlayerInfo& out, bool isLocal)
     if (!pawn) return false;
     
     // Position
-    out.pos = mem_->Read<Vec3>(pawn + offsets::m_vOldOrigin);
-    
-    // Game scene node for better position
+    // Position from game scene node (CGameSceneNode::m_vecOrigin)
     uintptr_t gameScene = mem_->Read<uintptr_t>(pawn + offsets::m_pGameSceneNode);
-    if (gameScene) {
-        out.pos = mem_->Read<Vec3>(gameScene + offsets::m_vecAbsOrigin);
-    }
+    if (!gameScene) return false;
+    out.pos = mem_->Read<Vec3>(gameScene + offsets::m_vecOrigin);
     
     // Calculate head position (approximate)
     out.headPos = out.pos;

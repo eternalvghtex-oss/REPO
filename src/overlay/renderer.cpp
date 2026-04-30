@@ -1,10 +1,13 @@
 #include "overlay.hpp"
 #include "../game/entity.hpp"
 #include "../utils/vector.hpp"
+#include <algorithm>
+#include <cstdio>
 
 void DrawESP(ImDrawList* drawList, const PlayerInfo& player, const Matrix4x4& viewMatrix, 
              int width, int height, const PlayerInfo& local) {
     if (!player.onScreen) return;
+    if (player.health <= 0) return;
     
     // Colors
     ImU32 color;
@@ -19,6 +22,7 @@ void DrawESP(ImDrawList* drawList, const PlayerInfo& player, const Matrix4x4& vi
     }
     
     float boxHeight = player.screenPos.y - player.headScreen.y;
+    if (boxHeight <= 1.0f) return;
     float boxWidth = boxHeight * 0.5f;
     float boxX = player.headScreen.x - boxWidth / 2;
     float boxY = player.headScreen.y;
@@ -43,10 +47,11 @@ void DrawESP(ImDrawList* drawList, const PlayerInfo& player, const Matrix4x4& vi
     );
     
     // Health bar
-    float healthHeight = barHeight * (player.health / 100.0f);
-    ImU32 healthColor = player.health > 60 ? IM_COL32(0, 255, 0, 255) :
-                        player.health > 30 ? IM_COL32(255, 255, 0, 255) :
-                        IM_COL32(255, 0, 0, 255);
+    const float hpFrac = std::clamp(player.health / 100.0f, 0.0f, 1.0f);
+    float healthHeight = barHeight * hpFrac;
+    const int hpRed = static_cast<int>((1.0f - hpFrac) * 255.0f);
+    const int hpGreen = static_cast<int>(hpFrac * 255.0f);
+    ImU32 healthColor = IM_COL32(hpRed, hpGreen, 0, 255);
     
     drawList->AddRectFilled(
         ImVec2(barX, barY + (barHeight - healthHeight)),
@@ -76,6 +81,20 @@ void DrawESP(ImDrawList* drawList, const PlayerInfo& player, const Matrix4x4& vi
         ImVec2(boxX + 2, boxY - textSize.y),
         IM_COL32(255, 255, 255, 255),
         info
+    );
+
+    char teamText[32];
+    std::snprintf(teamText, sizeof(teamText), "T:%d", player.team);
+    drawList->AddText(
+        ImVec2(boxX, boxY + boxHeight + 2.0f),
+        IM_COL32(220, 220, 220, 255),
+        teamText
+    );
+
+    drawList->AddCircleFilled(
+        ImVec2(player.headScreen.x, player.headScreen.y),
+        2.5f,
+        IM_COL32(255, 255, 255, 230)
     );
     
     // Skeleton ESP

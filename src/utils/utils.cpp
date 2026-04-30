@@ -1,5 +1,6 @@
 #include "utils.hpp"
-#include <windows.h>
+#include <tlhelp32.h>
+#include <cstring>
 
 namespace utils {
     DWORD GetPID(const char* name) {
